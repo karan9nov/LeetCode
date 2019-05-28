@@ -1,27 +1,24 @@
-public int lengthOfLongestSubstring(String s) {
-
-    if (s == null || s.length() == 0)
-        return 0;
-
-    int maxLen = 0;
-    Set<Character> currentWordSet = new LinkedHashSet<>();
-    int start = 0; int end = 0;
-
-    int currentLen = 0;
-
-    while(start <= end && end < s.length()) {
-
-        while (currentWordSet.contains(s.charAt(end))) {
-            maxLen = Math.max(maxLen, currentLen);
-            currentWordSet.remove(s.charAt(start));
-            currentLen -= 1;
-            start++;
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        
+        Set<Character> set = new HashSet<>();
+        int maxLen = 0;
+        int start = 0, end = 0;
+        
+        while (end < s.length()) {
+            
+            while (start < end && set.contains(s.charAt(end))) {
+                set.remove(s.charAt(start));
+                start++;
+            }
+            
+            set.add(s.charAt(end));
+            maxLen = Math.max(maxLen, set.size());
+            // System.out.println(set);
+            end++;
         }
-        currentWordSet.add(s.charAt(end));
-        currentLen+=1;
-        end++;
-        System.out.println(currentWordSet);
+        
+        return maxLen;
+        
     }
-    return Math.max(maxLen, currentLen);
-
 }
