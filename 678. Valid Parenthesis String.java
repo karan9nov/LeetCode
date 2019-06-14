@@ -8,10 +8,6 @@ class Solution {
 
     private boolean checkValidString(String s, List<Character> stack) {
 
-        // System.out.println(s);
-        // System.out.println(stack);
-        // System.out.println();
-
         if (s.isEmpty() && stack.isEmpty()) {
             // System.out.println("true");
             return true;
