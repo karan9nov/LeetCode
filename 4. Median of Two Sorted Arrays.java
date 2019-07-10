@@ -1,46 +1,45 @@
-class Solution {
-    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+public class Solution {
 
-        if (nums1.length > nums2.length)
-            return findMedianSortedArrays(nums2, nums1);
+	public double findMedianSortedArrays(int[] X, int[] Y) {
 
-        int x = nums1.length;
-        int y = nums2.length;
+		if (Y.length < X.length)
+			return findMedianSortedArrays(Y, X);
 
-        int total = x + y;
+		// Length of both arrays
+		int lenX = X.length, lenY = Y.length;
 
-        int start = 0;
-        int end = x;
-        int parX = (start + end) / 2;
-        int parY = (x + y + 1) / 2 - parX;
+		int start = 0, end = lenX;
+		int numberOfLeftElements = (lenX + lenY + 1) / 2;
 
-        while (start <= end) {
+		while (start <= end) {
 
-            int maxLeftX = parX == 0 ? Integer.MIN_VALUE : nums1[parX - 1];
-            int maxLeftY = parY == 0 ? Integer.MIN_VALUE : nums2[parY - 1];
-            int minRightX = parX == x ? Integer.MAX_VALUE : nums1[parX];
-            int minRightY = parY == y ? Integer.MAX_VALUE : nums2[parY];
+			// Find the partition points
+			int parX = (start + end) / 2;
+			int parY = numberOfLeftElements - parX;
 
-            if (maxLeftX <= minRightY && maxLeftY <= minRightX) {
+			// Find Max of Left Side
+			int maxLeftX = parX == 0 ? Integer.MIN_VALUE : X[parX - 1];
+			int maxLeftY = parY == 0 ? Integer.MIN_VALUE : Y[parY - 1];
 
-                if (total % 2 == 0) {
-                    return (Math.max(maxLeftX, maxLeftY) + Math.min(minRightX, minRightY)) / 2.0;
-                } else {
-                    return Math.max(maxLeftX, maxLeftY);
-                }
+			// Find Min of Right Side
+			int minRightX = parX == lenX ? Integer.MAX_VALUE : X[parX];
+			int minRightY = parY == lenY ? Integer.MAX_VALUE : Y[parY];
 
-            } else if (maxLeftX > minRightY) {
-                end = parX - 1;
-                parX = (start + end) / 2;
-                parY = (x + y + 1) / 2 - parX;
-            } else {
-                start = parX + 1;
-                parX = (start + end) / 2;
-                parY = (x + y + 1) / 2 - parX;
-            }
+			if (maxLeftX > minRightY) {
+				// move to the Left of X
+				end = parX - 1;
+			} else if (maxLeftY > minRightX) {
+				// move to the right of X
+				start = parX + 1;
+			} else {
+				if ((lenX + lenY) % 2 == 0) {
+					return (Math.max(maxLeftX, maxLeftY) + Math.min(minRightX, minRightY)) / 2.0;
+				} else {
+					return Math.max(maxLeftX, maxLeftY);
+				}
+			}
+		}
 
-        }
-
-        return -1;
-    }
+		return -1;
+	}
 }
